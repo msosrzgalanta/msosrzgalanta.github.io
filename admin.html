@@ -1,174 +1,111 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-<meta charset="UTF-8">
-<title>MsO SRZ Galanta – Disciplinárny dohľad</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>GPS Monitor – MsO SRZ Galanta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <style>
+    body {
+      background: #0d0d0d;
+      color: #e5e5e5;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #6aff6a;
+      margin-bottom: 20px;
+    }
+    #logBox {
+      background: #111;
+      padding: 18px;
+      border-radius: 12px;
+      border: 1px solid #333;
+      max-width: 900px;
+      margin: auto;
+      height: 75vh;
+      overflow-y: auto;
+      font-size: 15px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+    .entry {
+      padding: 8px 0;
+      border-bottom: 1px solid #222;
+    }
+    .time {
+      color: #6aff6a;
+      font-weight: bold;
+    }
+    .member {
+      color: #4da6ff;
+      font-weight: bold;
+    }
+  </style>
 
-<!-- Leaflet mapa -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 
-<style>
-body {
-  background:#0a0a0a;
-  color:white;
-  font-family:Arial;
-  margin:0;
-  padding:0;
-}
-#loginBox {
-  max-width:350px;
-  padding:20px;
-  margin:50px auto;
-  background:#111;
-  border-radius:10px;
-  text-align:center;
-}
-#map {
-  height:350px;
-  margin:10px;
-  border-radius:10px;
-  overflow:hidden;
-}
-.tableBox {
-  margin:10px;
-  background:#111;
-  padding:10px;
-  border-radius:10px;
-}
-table {
-  width:100%;
-  border-collapse:collapse;
-  color:white;
-}
-td, th {
-  padding:6px;
-  border-bottom:1px solid #333;
-}
-</style>
+  <script>
+    // =====================================================
+    //  Firebase konfigurácia – TVOJ CONFIG
+    // =====================================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyAqGJD78BuuBqmW9IvFerUhFKAF5AXfJ3o",
+      authDomain: "mso-srz-galanta-da8f1.firebaseapp.com",
+      databaseURL: "https://mso-srz-galanta-da8f1-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "mso-srz-galanta-da8f1",
+      storageBucket: "mso-srz-galanta-da8f1.firebasestorage.app",
+      messagingSenderId: "985946865372",
+      appId: "1:985946865372:web:a74cda10ac4984950c7e19"
+    };
 
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // =====================================================
+    //  LIVE STREAM Z KOLEKCIE stay_events
+    // =====================================================
+    function startListening() {
+      const logBox = document.getElementById("logBox");
+
+      db.collection("stay_events")
+        .orderBy("timestamp", "desc")
+        .limit(100)
+        .onSnapshot((snapshot) => {
+          logBox.innerHTML = ""; // Vymazať log pri každej aktualizácii
+
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+
+            const time = new Date(data.timestamp).toLocaleString("sk-SK");
+            const lat = data.lat.toFixed(5);
+            const lon = data.lon.toFixed(5);
+
+            const entry = `
+<div class="entry">
+  <span class="time">${time}</span><br>
+  Člen: <span class="member">${data.memberId}</span><br>
+  📍 Poloha: ${lat}, ${lon}
+</div>
+`;
+            logBox.innerHTML += entry;
+          });
+        });
+    }
+  </script>
 </head>
-<body>
 
-<div id="loginBox">
-  <h2>Disciplinárny panel</h2>
-  <p>Zadajte heslo</p>
-  <input id="pwd" type="password" style="width:100%;padding:8px;">
-  <button onclick="checkPwd()" style="margin-top:10px;padding:8px;width:100%;">Vstúpiť</button>
-  <p style="color:red;display:none" id="badPwd">Nesprávne heslo</p>
-</div>
+<body onload="startListening()">
 
-<div id="app" style="display:none;">
-  <h2 style="text-align:center;">Online sledovanie členov</h2>
-  <div id="map"></div>
+  <h1>📡 GPS Monitor – MsO SRZ Galanta</h1>
 
-  <div class="tableBox">
-    <h3>Registrované státia pri vode (15+ min)</h3>
-    <table id="table">
-      <thead>
-        <tr>
-          <th>Legitimácia</th>
-          <th>Čas</th>
-          <th>GPS</th>
-        </tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
+  <div id="logBox">
+    Načítavam posledné GPS záznamy...
   </div>
-</div>
-
-<script>
-// =======================
-// 1) Heslo
-// =======================
-function checkPwd() {
-  const p = document.getElementById("pwd").value;
-  if (p === "MSO2025DISCIPLINARKA") {
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("app").style.display = "block";
-    initPanel();
-  } else {
-    document.getElementById("badPwd").style.display = "block";
-  }
-}
-
-// =======================
-// 2) Firebase config
-// =======================
-const firebaseConfig = {
-  apiKey: "AIzaSy....",     // ← doplníš tvoj
-  authDomain: "mso-srz-galanta.firebaseapp.com",
-  projectId: "mso-srz-galanta",
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// =======================
-// 3) Mapa
-// =======================
-let map = null;
-let markers = {};
-
-function initMap() {
-  map = L.map('map').setView([48.19, 17.73], 11);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19
-  }).addTo(map);
-}
-
-// =======================
-// 4) Real-time sledovanie
-// =======================
-function initPanel() {
-  initMap();
-
-  db.collection("staying_events")
-    .orderBy("timestamp", "desc")
-    .limit(50)
-    .onSnapshot((snap) => {
-      const tbody = document.getElementById("tbody");
-      tbody.innerHTML = "";
-
-      snap.forEach(doc => {
-        const d = doc.data();
-        const tr = document.createElement("tr");
-
-        tr.innerHTML = `
-          <td>${d.memberId}</td>
-          <td>${new Date(d.timestamp).toLocaleString()}</td>
-          <td>${d.lat.toFixed(5)}, ${d.lon.toFixed(5)}</td>
-        `;
-        tbody.appendChild(tr);
-
-        addMarker(d);
-      });
-    });
-}
-
-// =======================
-// 5) Pridanie markerov
-// =======================
-function addMarker(ev) {
-  const id = ev.memberId;
-
-  if (markers[id]) {
-    markers[id].setLatLng([ev.lat, ev.lon]);
-  } else {
-    markers[id] = L.marker([ev.lat, ev.lon])
-      .addTo(map)
-      .bindPopup(`<b>${id}</b><br>${new Date(ev.timestamp).toLocaleString()}`);
-  }
-}
-
-</script>
 
 </body>
 </html>
-
