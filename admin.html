@@ -9,12 +9,10 @@
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin=""
   />
   <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""
   ></script>
 
@@ -30,13 +28,7 @@
       --danger: #f97373;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui; }
 
     body {
       background: radial-gradient(circle at top, #022c22, #020617 45%, #000);
@@ -45,10 +37,7 @@
       padding: 16px;
     }
 
-    .shell {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
+    .shell { max-width: 1400px; margin: 0 auto; }
 
     header {
       margin-bottom: 14px;
@@ -63,142 +52,72 @@
       font-size: 22px;
       font-weight: 700;
       letter-spacing: 0.04em;
-      display: flex;
+      display: flex; gap: 10px;
       align-items: center;
-      gap: 10px;
     }
 
-    header h1 span {
-      font-size: 26px;
-    }
-
-    header small {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .tagline {
-      font-size: 13px;
-      color: var(--muted);
-    }
+    header small { font-size: 12px; color: var(--muted); }
+    .tagline { font-size: 13px; color: var(--muted); }
 
     .controls {
       margin-bottom: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
+      display: flex; flex-wrap: wrap;
       justify-content: space-between;
-    }
-
-    .controls-left,
-    .controls-right {
-      display: flex;
-      flex-wrap: wrap;
       gap: 10px;
-      align-items: center;
     }
 
     .chip {
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(15,23,42,0.75);
       padding: 6px 10px;
       font-size: 12px;
       display: inline-flex;
-      align-items: center;
       gap: 6px;
+      align-items: center;
     }
 
     .chip-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
+      width: 8px; height: 8px; border-radius: 999px;
       background: var(--accent);
-      box-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
+      box-shadow: 0 0 10px rgba(74,222,128,0.8);
     }
 
-    select,
-    button {
+    select, button {
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(15,23,42,0.85);
       color: var(--text);
       padding: 6px 12px;
       font-size: 13px;
       cursor: pointer;
     }
 
-    button {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.15s, transform 0.05s;
-    }
-
-    button:hover {
-      background: rgba(15, 23, 42, 1);
-    }
-
-    button:active {
-      transform: translateY(1px);
-    }
-
-    button.danger {
-      border-color: rgba(248, 113, 113, 0.6);
-      color: var(--danger);
-    }
+    button:hover { background: rgba(15,23,42,1); }
+    button:active { transform: translateY(1px); }
+    button.danger { color: var(--danger); border-color: rgba(248,113,113,0.6); }
 
     main {
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      grid-template-columns: 1fr 1fr;
       gap: 14px;
-      align-items: stretch;
     }
-
-    @media (max-width: 1000px) {
-      main {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
+    @media (max-width:1000px) { main { grid-template-columns: 1fr; } }
 
     .card {
-      background: radial-gradient(circle at top left, #020617, #020617 40%, #000);
+      background: radial-gradient(circle at top left, #020617, #000);
       border-radius: 18px;
       border: 1px solid var(--border);
       padding: 12px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-      gap: 8px;
-    }
-
-    .card-header h2 {
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--muted);
-    }
-
-    .card-header small {
-      font-size: 11px;
-      color: var(--muted);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+      display: flex; flex-direction: column;
     }
 
     #eventsList {
       margin-top: 6px;
       border-radius: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      background: radial-gradient(circle at top left, #020617, #020617 60%, #020617);
+      border: 1px solid rgba(148,163,184,0.25);
+      background: #020617;
       padding: 6px;
       overflow-y: auto;
       max-height: 70vh;
@@ -208,242 +127,105 @@
       border-radius: 10px;
       padding: 8px 10px;
       margin-bottom: 4px;
-      background: linear-gradient(
-        90deg,
-        rgba(15, 118, 110, 0.4),
-        rgba(17, 24, 39, 0.95)
-      );
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: linear-gradient(90deg, rgba(21,128,61,0.4), rgba(17,24,39,0.95));
+      border: 1px solid rgba(148,163,184,0.5);
       display: grid;
       grid-template-columns: auto 1fr;
-      column-gap: 8px;
-      row-gap: 2px;
+      gap: 6px;
       font-size: 12px;
     }
 
-    .event-row:nth-child(odd) {
-      background: linear-gradient(
-        90deg,
-        rgba(21, 128, 61, 0.4),
-        rgba(17, 24, 39, 0.95)
-      );
-    }
-
-    .event-icon {
-      grid-row: 1 / span 2;
-      align-self: center;
-      font-size: 20px;
-    }
-
-    .event-time {
-      font-weight: 600;
-      color: var(--accent);
-    }
-
-    .event-member {
-      color: #e5e7eb;
-      font-weight: 500;
-    }
-
-    .event-meta {
-      color: var(--muted);
-      font-size: 11px;
-    }
+    .event-icon { font-size: 20px; }
+    .event-time { font-weight: 600; color: var(--accent); }
+    .event-member { color: #e5e7eb; font-weight: 500; }
+    .event-meta { color: var(--muted); font-size: 11px; }
 
     #map {
       border-radius: 14px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      overflow: hidden;
-      flex: 1;
+      border: 1px solid rgba(148,163,184,0.5);
       min-height: 260px;
-    }
-
-    footer {
-      margin-top: 12px;
-      font-size: 11px;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .status-pill {
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: rgba(15, 23, 42, 0.8);
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .status-pill span.dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--accent);
-    }
-
-    .status-pill span.dot.red {
-      background: var(--danger);
+      overflow: hidden;
     }
 
     .loading-overlay {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at top, #020617, #000);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: fixed; inset: 0; background: #000a;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center; gap: 6px;
       z-index: 999;
-      flex-direction: column;
-      gap: 6px;
     }
 
     .spinner {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      border: 3px solid rgba(148, 163, 184, 0.4);
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 3px solid rgba(148,163,184,0.4);
       border-top-color: var(--accent);
       animation: spin 0.8s linear infinite;
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .error-box {
-      padding: 8px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(248, 113, 113, 0.7);
-      background: rgba(153, 27, 27, 0.2);
-      color: #fecaca;
-      font-size: 12px;
-      margin-bottom: 8px;
-    }
-
-    label {
-      font-size: 11px;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    input[type="checkbox"] {
-      accent-color: var(--accent);
-    }
+    .hidden { display: none !important; }
   </style>
 </head>
 
 <body>
-  <!-- jednoduchá “brána” – zmeň si heslo -->
+
+  <!-- Loading -->
   <div id="loadingScreen" class="loading-overlay">
     <div class="spinner"></div>
-    <div>Načítavam admin panel…</div>
+    <div style="color:white;">Načítavam admin panel…</div>
   </div>
 
-  <div id="unauth" class="hidden" style="text-align:center; margin-top: 80px;">
+  <!-- Unauthorized -->
+  <div id="unauth" class="hidden" style="text-align:center; margin-top:80px;">
     <h2>Neautorizovaný prístup</h2>
-    <p style="color:#9ca3af; margin-top: 8px;">
-      Nesprávne heslo. Obráť sa na predsedu MsO SRZ Galanta.
-    </p>
+    <p style="color:#9ca3af;">Nesprávne heslo.</p>
   </div>
 
+  <!-- APP -->
   <div id="appRoot" class="shell hidden">
     <header>
       <div>
-        <h1>
-          <span>📍</span> GPS státia pri vode
-        </h1>
-        <small>MsO SRZ Galanta – len pre interné použitie disciplinárnej komisie</small>
+        <h1>📍 GPS státia pri vode</h1>
+        <small>Interné použitie MsO SRZ Galanta</small>
       </div>
-      <div class="tagline">
-        LIVE log členov, ktorí stáli pri vode ≥ 15 min – podľa údajov z mobilnej aplikácie.
-      </div>
+      <div class="tagline">Live údaje z mobilnej aplikácie</div>
     </header>
 
     <div class="controls">
-      <div class="controls-left">
-        <div class="chip">
-          <span class="chip-dot"></span>
-          <span id="connectionStatus">Pripojené k Firebase (Firestore)</span>
-        </div>
-        <div class="chip">
-          Udalostí zobrazených: <strong id="eventsCount">0</strong>
-        </div>
-      </div>
-      <div class="controls-right">
-        <label>
-          Interval:
-          <select id="timeFilter">
-            <option value="24h">Posledných 24 hodín</option>
-            <option value="today">Dnes</option>
-            <option value="7d">Posledných 7 dní</option>
-            <option value="all">Všetko (max 500)</option>
-          </select>
-        </label>
-        <label>
-          <input type="checkbox" id="autoScroll" checked />
-          Auto scroll logu
-        </label>
-        <button id="exportCsvBtn" title="Export aktuálne filtrovaných udalostí do CSV">
-          ⬇ Export CSV
-        </button>
-      </div>
+      <div class="chip"><span class="chip-dot"></span> <span id="connectionStatus">Pripájam…</span></div>
+      <div class="chip">Záznamov: <strong id="eventsCount">0</strong></div>
+
+      <select id="timeFilter">
+        <option value="24h">Posledných 24 hodín</option>
+        <option value="today">Dnes</option>
+        <option value="7d">Posledných 7 dní</option>
+        <option value="all">Všetko (max 500)</option>
+      </select>
+
+      <button id="exportCsvBtn">⬇ Export CSV</button>
     </div>
 
     <main>
-      <!-- ĽAVO: log -->
       <section class="card">
-        <div class="card-header">
-          <div>
-            <h2>Log státia pri vode</h2>
-            <small>
-              Každý záznam reprezentuje cca 15+ min státia člena na jednom mieste pri revíri.
-            </small>
-          </div>
-          <span id="streamStatus" class="status-pill">
-            <span class="dot"></span> Live stream aktívny
-          </span>
-        </div>
-
-        <div id="errors" class="error-box hidden"></div>
+        <h2 style="color:#9ca3af; margin-bottom:6px;">Log státia</h2>
         <div id="eventsList"></div>
       </section>
 
-      <!-- PRAVO: mapa -->
       <section class="card">
-        <div class="card-header">
-          <div>
-            <h2>Mapa státia</h2>
-            <small>
-              Marker = zaznamenané státie pri vode. Klikni pre detail.
-            </small>
-          </div>
-        </div>
+        <h2 style="color:#9ca3af; margin-bottom:6px;">Mapa</h2>
         <div id="map"></div>
       </section>
     </main>
 
-    <footer>
-      Všetky údaje sú len informatívne. Skutočné porušenie pravidiel vždy potvrdzuje rybárska
-      stráž. &mdash; Created by Juraj Bóžing
+    <footer style="margin-top:10px; color:#9ca3af; font-size:11px; text-align:center;">
+      Created by Juraj Bóžing ©
     </footer>
   </div>
 
-  <!-- Firebase + Firestore (v9 modular, cez CDN) -->
+  <!-- FIREBASE -->
   <script type="module">
-    // ==========================
-    // 1) Jednoduché heslo
-    // ==========================
-    const PASSWORD = "galanta123"; // 🔐 ZMEŇ SI!
+    /* ====== 1) HESLO ====== */
+    const PASSWORD = "galanta123";
     const loadingScreen = document.getElementById("loadingScreen");
     const appRoot = document.getElementById("appRoot");
     const unauth = document.getElementById("unauth");
@@ -451,46 +233,28 @@
     async function authGate() {
       let ok = false;
       for (let i = 0; i < 3; i++) {
-        const input = window.prompt("Zadaj heslo pre administračný panel MsO SRZ Galanta:");
-        if (input === null) break; // stlačil Cancel
-        if (input === PASSWORD) {
-          ok = true;
-          break;
-        }
+        const inp = prompt("Zadaj heslo:");
+        if (inp === PASSWORD) { ok = true; break; }
+        if (inp === null) break;
       }
       loadingScreen.classList.add("hidden");
-      if (!ok) {
-        unauth.classList.remove("hidden");
-        return false;
-      }
-      appRoot.classList.remove("hidden");
-      return true;
+      if (!ok) unauth.classList.remove("hidden");
+      else appRoot.classList.remove("hidden");
+      return ok;
     }
 
-    if (!await authGate()) {
-      // nesprávne heslo, nedávaj nič ďalej
-      throw new Error("Unauthorized");
-    }
+    if (!await authGate()) throw new Error("Unauthorized");
 
-    // ==========================
-    // 2) Firebase / Firestore
-    // ==========================
+    /* ====== 2) FIREBASE ====== */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import {
-      getFirestore,
-      collection,
-      query,
-      orderBy,
-      limit,
-      onSnapshot
+      getFirestore, collection, query, orderBy, limit, onSnapshot
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // Tvoja konfigurácia – presne tá, ktorú si mi poslal
     const firebaseConfig = {
       apiKey: "AIzaSyAqGJD78BuuBqmW9IvFerUhFKAF5AXfJ3o",
       authDomain: "mso-srz-galanta-da8f1.firebaseapp.com",
-      databaseURL:
-        "https://mso-srz-galanta-da8f1-default-rtdb.europe-west1.firebasedatabase.app",
+      databaseURL: "https://mso-srz-galanta-da8f1-default-rtdb.europe-west1.firebasedatabase.app",
       projectId: "mso-srz-galanta-da8f1",
       storageBucket: "mso-srz-galanta-da8f1.firebasestorage.app",
       messagingSenderId: "985946865372",
@@ -500,246 +264,121 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const connectionStatusEl = document.getElementById("connectionStatus");
-    const streamStatusEl = document.getElementById("streamStatus");
     const eventsListEl = document.getElementById("eventsList");
     const eventsCountEl = document.getElementById("eventsCount");
-    const errorsEl = document.getElementById("errors");
     const timeFilterEl = document.getElementById("timeFilter");
-    const autoScrollEl = document.getElementById("autoScroll");
     const exportCsvBtn = document.getElementById("exportCsvBtn");
+    const connectionStatusEl = document.getElementById("connectionStatus");
 
-    // ==========================
-    // 3) Leaflet mapa
-    // ==========================
-    let map = L.map("map", {
-      center: [48.192, 17.727], // orientačne Galanta
-      zoom: 11,
-      zoomControl: true
-    });
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: "&copy; OpenStreetMap"
-    }).addTo(map);
-
-    let markersLayer = L.layerGroup().addTo(map);
-
-    // ==========================
-    // 4) Práca s dátami
-    // ==========================
-    /**
-     * Všetky eventy z Firestore (max 500)
-     * objekt: { memberId, lat, lon, ts: Date }
-     */
     let allEvents = [];
 
-    function showError(msg) {
-      errorsEl.textContent = msg;
-      errorsEl.classList.remove("hidden");
-    }
+    /* ====== 3) MAPA ====== */
+    let map = L.map("map", { center:[48.192,17.727], zoom:11 });
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+    let markersLayer = L.layerGroup().addTo(map);
 
-    function clearError() {
-      errorsEl.textContent = "";
-      errorsEl.classList.add("hidden");
-    }
-
-    function formatDateTime(dt) {
-      if (!(dt instanceof Date)) return "-";
-      const d = dt;
-      const dd = String(d.getDate()).padStart(2, "0");
-      const mm = String(d.getMonth() + 1).padStart(2, "0");
-      const yyyy = d.getFullYear();
-      const hh = String(d.getHours()).padStart(2, "0");
-      const mi = String(d.getMinutes()).padStart(2, "0");
-      return `${dd}.${mm}.${yyyy} ${hh}:${mi}`;
+    function formatDate(dt) {
+      let d = dt;
+      return (
+        String(d.getDate()).padStart(2,"0")+"."+
+        String(d.getMonth()+1).padStart(2,"0")+"."+
+        d.getFullYear()+" "+
+        String(d.getHours()).padStart(2,"0")+":"+
+        String(d.getMinutes()).padStart(2,"0")
+      );
     }
 
     function filterEvents() {
       const now = new Date();
-      const value = timeFilterEl.value;
+      const mode = timeFilterEl.value;
       let from = null;
 
-      if (value === "24h") {
-        from = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-      } else if (value === "today") {
-        from = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-      } else if (value === "7d") {
-        from = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-      } else {
-        // "all" – bez filtra
-        from = null;
-      }
+      if (mode === "24h") from = new Date(now - 24*3600*1000);
+      else if (mode === "today") from = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      else if (mode === "7d") from = new Date(now - 7*24*3600*1000);
 
       if (!from) return allEvents;
-
-      return allEvents.filter(ev => ev.ts >= from);
+      return allEvents.filter(e => e.ts >= from);
     }
 
     function renderEvents() {
-      clearError();
       const filtered = filterEvents();
       eventsCountEl.textContent = filtered.length;
-
+      markersLayer.clearLayers();
       eventsListEl.innerHTML = "";
 
-      if (!filtered.length) {
-        const div = document.createElement("div");
-        div.style.padding = "8px 10px";
-        div.style.color = "#9ca3af";
-        div.style.fontSize = "12px";
-        div.textContent =
-          "Žiadne záznamy pre zvolený interval. Buď ešte nikto nestál pri vode, alebo aplikácia neodoslala dáta.";
-        eventsListEl.appendChild(div);
+      filtered.sort((a,b)=>b.ts-a.ts).forEach(ev=>{
+        const row = document.createElement("div");
+        row.className="event-row";
 
-        markersLayer.clearLayers();
-        return;
-      }
+        row.innerHTML = `
+          <div class="event-icon">🎣</div>
+          <div class="event-time">${formatDate(ev.ts)}</div>
+          <div class="event-member">Člen: ${ev.memberId ?? "neznámy"}</div>
+          <div class="event-meta">GPS: ${ev.lat.toFixed(5)}, ${ev.lon.toFixed(5)}</div>
+        `;
 
-      // Log – najnovšie hore
-      filtered
-        .sort((a, b) => b.ts.getTime() - a.ts.getTime())
-        .forEach(ev => {
-          const row = document.createElement("div");
-          row.className = "event-row";
+        eventsListEl.appendChild(row);
 
-          const icon = document.createElement("div");
-          icon.className = "event-icon";
-          icon.textContent = "🎣";
-
-          const timeEl = document.createElement("div");
-          timeEl.className = "event-time";
-          timeEl.textContent = formatDateTime(ev.ts);
-
-          const memberEl = document.createElement("div");
-          memberEl.className = "event-member";
-          memberEl.textContent = `Člen: ${ev.memberId ?? "neznámy"}`;
-
-          const metaEl = document.createElement("div");
-          metaEl.className = "event-meta";
-          metaEl.textContent = `Poloha: ${ev.lat.toFixed(5)}, ${ev.lon.toFixed(5)} (státie pri vode ≥ ~15 min)`;
-
-          row.appendChild(icon);
-          row.appendChild(timeEl);
-          row.appendChild(memberEl);
-          row.appendChild(metaEl);
-
-          eventsListEl.appendChild(row);
-        });
-
-      // autoscroll
-      if (autoScrollEl.checked) {
-        eventsListEl.scrollTop = 0;
-      }
-
-      // Mapa – markers z filtrovaných eventov
-      markersLayer.clearLayers();
-
-      let bounds = [];
-
-      filtered.forEach(ev => {
-        const m = L.marker([ev.lat, ev.lon]).addTo(markersLayer);
+        let m = L.marker([ev.lat,ev.lon]).addTo(markersLayer);
         m.bindPopup(
-          `<strong>Člen:</strong> ${ev.memberId ?? "neznámy"}<br/>
-           <strong>Čas:</strong> ${formatDateTime(ev.ts)}<br/>
-           <strong>Poloha:</strong> ${ev.lat.toFixed(5)}, ${ev.lon.toFixed(5)}`
+          "<b>Člen:</b> "+(ev.memberId ?? "neznámy")+"<br>"+
+          "<b>Čas:</b> "+formatDate(ev.ts)+"<br>"+
+          "<b>Poloha:</b> "+ev.lat+", "+ev.lon
         );
-        bounds.push([ev.lat, ev.lon]);
       });
 
-      if (bounds.length >= 1) {
-        map.fitBounds(bounds, { padding: [30, 30] });
-      }
+      if (filtered.length)
+        map.fitBounds(filtered.map(ev=>[ev.lat,ev.lon]),{padding:[30,30]});
     }
 
-    function exportCsv() {
+    /* ====== CSV EXPORT ====== */
+    exportCsvBtn.onclick = ()=>{
       const filtered = filterEvents();
-      if (!filtered.length) {
-        alert("Nie je čo exportovať – žiadne dáta v aktuálnom filtri.");
-        return;
-      }
+      if (!filtered.length){ alert("Žiadne dáta."); return; }
 
-      const header = "memberId;lat;lon;timestamp\n";
-      const rows = filtered
-        .sort((a, b) => a.ts.getTime() - b.ts.getTime())
-        .map(ev => {
-          const tsStr = ev.ts.toISOString();
-          return `${ev.memberId ?? ""};${ev.lat};${ev.lon};${tsStr}`;
-        });
+      let csv = "memberId;lat;lon;timestamp\n";
+      filtered.sort((a,b)=>a.ts-b.ts).forEach(ev=>{
+        csv += `${ev.memberId ?? ""};${ev.lat};${ev.lon};${ev.ts.toISOString()}\n`;
+      });
 
-      const csv = header + rows.join("\n");
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const blob = new Blob([csv], {type:"text/csv"});
       const url = URL.createObjectURL(blob);
-
       const a = document.createElement("a");
       a.href = url;
-      const now = new Date();
-      const fname = `stay_events_${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}.csv`;
-      a.download = fname;
-      document.body.appendChild(a);
+      a.download = "staying_log.csv";
       a.click();
-      document.body.removeChild(a);
       URL.revokeObjectURL(url);
-    }
+    };
 
-    exportCsvBtn.addEventListener("click", exportCsv);
-    timeFilterEl.addEventListener("change", renderEvents);
+    timeFilterEl.onchange = renderEvents;
 
-    // ==========================
-    // 5) Firestore stream
-    // ==========================
-    connectionStatusEl.textContent = "Pripojenie k Firestore…";
+    /* ====== 4) FIRESTORE STREAM — OPRAVENÉ NA "stays" ====== */
+    connectionStatusEl.textContent = "Pripájam na Firestore…";
 
-    try {
-      const stayRef = collection(db, "stay_events");
+    const stayRef = collection(db, "stays"); // 👈 opravené
 
-      const qStay = query(
-        stayRef,
-        orderBy("timestamp", "desc"),
-        limit(500) // nech to nezadusíš :)
-      );
+    const qStay = query(stayRef, orderBy("timestamp","desc"), limit(500));
 
-      onSnapshot(
-        qStay,
-        snapshot => {
-          connectionStatusEl.textContent =
-            "Pripojené k Firebase (Firestore – stay_events)";
-          streamStatusEl.innerHTML = `<span class="dot"></span> Live stream aktívny`;
+    onSnapshot(qStay, snap=>{
+      connectionStatusEl.textContent = "Pripojené (Firestore)";
+      allEvents = [];
 
-          allEvents = [];
+      snap.forEach(doc=>{
+        const d = doc.data();
+        if (!d.lat || !d.lon || !d.timestamp) return;
 
-          snapshot.forEach(docSnap => {
-            const d = docSnap.data();
-            const ts = d.timestamp && d.timestamp.toDate ? d.timestamp.toDate() : null;
-            const lat = typeof d.lat === "number" ? d.lat : null;
-            const lon = typeof d.lon === "number" ? d.lon : null;
+        allEvents.push({
+          memberId: d.memberId ?? null,
+          lat: d.lat,
+          lon: d.lon,
+          ts: d.timestamp.toDate()
+        });
+      });
 
-            if (!ts || lat === null || lon === null) return; // skip neúplné
-
-            allEvents.push({
-              memberId: d.memberId ?? null,
-              lat,
-              lon,
-              ts
-            });
-          });
-
-          renderEvents();
-        },
-        error => {
-          console.error(error);
-          connectionStatusEl.textContent = "Chyba pripojenia k Firestore!";
-          streamStatusEl.innerHTML = `<span class="dot red"></span> Stream zastavený`;
-          showError(
-            "Nepodarilo sa načítať dáta z Firestore. Skontroluj internet a Firebase nastavenia."
-          );
-        }
-      );
-    } catch (err) {
-      console.error(err);
-      connectionStatusEl.textContent = "Chyba inicializácie Firebase.";
-      showError("Chyba inicializácie Firebase / Firestore – skontroluj konzolu.");
-    }
+      renderEvents();
+    });
   </script>
+
 </body>
 </html>
