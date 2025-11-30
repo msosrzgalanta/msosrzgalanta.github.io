@@ -1,1 +1,174 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<title>MsO SRZ Galanta – Disciplinárny dohľad</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<!-- Leaflet mapa -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+body {
+  background:#0a0a0a;
+  color:white;
+  font-family:Arial;
+  margin:0;
+  padding:0;
+}
+#loginBox {
+  max-width:350px;
+  padding:20px;
+  margin:50px auto;
+  background:#111;
+  border-radius:10px;
+  text-align:center;
+}
+#map {
+  height:350px;
+  margin:10px;
+  border-radius:10px;
+  overflow:hidden;
+}
+.tableBox {
+  margin:10px;
+  background:#111;
+  padding:10px;
+  border-radius:10px;
+}
+table {
+  width:100%;
+  border-collapse:collapse;
+  color:white;
+}
+td, th {
+  padding:6px;
+  border-bottom:1px solid #333;
+}
+</style>
+
+</head>
+<body>
+
+<div id="loginBox">
+  <h2>Disciplinárny panel</h2>
+  <p>Zadajte heslo</p>
+  <input id="pwd" type="password" style="width:100%;padding:8px;">
+  <button onclick="checkPwd()" style="margin-top:10px;padding:8px;width:100%;">Vstúpiť</button>
+  <p style="color:red;display:none" id="badPwd">Nesprávne heslo</p>
+</div>
+
+<div id="app" style="display:none;">
+  <h2 style="text-align:center;">Online sledovanie členov</h2>
+  <div id="map"></div>
+
+  <div class="tableBox">
+    <h3>Registrované státia pri vode (15+ min)</h3>
+    <table id="table">
+      <thead>
+        <tr>
+          <th>Legitimácia</th>
+          <th>Čas</th>
+          <th>GPS</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// =======================
+// 1) Heslo
+// =======================
+function checkPwd() {
+  const p = document.getElementById("pwd").value;
+  if (p === "MSO2025DISCIPLINARKA") {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    initPanel();
+  } else {
+    document.getElementById("badPwd").style.display = "block";
+  }
+}
+
+// =======================
+// 2) Firebase config
+// =======================
+const firebaseConfig = {
+  apiKey: "AIzaSy....",     // ← doplníš tvoj
+  authDomain: "mso-srz-galanta.firebaseapp.com",
+  projectId: "mso-srz-galanta",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// =======================
+// 3) Mapa
+// =======================
+let map = null;
+let markers = {};
+
+function initMap() {
+  map = L.map('map').setView([48.19, 17.73], 11);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19
+  }).addTo(map);
+}
+
+// =======================
+// 4) Real-time sledovanie
+// =======================
+function initPanel() {
+  initMap();
+
+  db.collection("staying_events")
+    .orderBy("timestamp", "desc")
+    .limit(50)
+    .onSnapshot((snap) => {
+      const tbody = document.getElementById("tbody");
+      tbody.innerHTML = "";
+
+      snap.forEach(doc => {
+        const d = doc.data();
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>${d.memberId}</td>
+          <td>${new Date(d.timestamp).toLocaleString()}</td>
+          <td>${d.lat.toFixed(5)}, ${d.lon.toFixed(5)}</td>
+        `;
+        tbody.appendChild(tr);
+
+        addMarker(d);
+      });
+    });
+}
+
+// =======================
+// 5) Pridanie markerov
+// =======================
+function addMarker(ev) {
+  const id = ev.memberId;
+
+  if (markers[id]) {
+    markers[id].setLatLng([ev.lat, ev.lon]);
+  } else {
+    markers[id] = L.marker([ev.lat, ev.lon])
+      .addTo(map)
+      .bindPopup(`<b>${id}</b><br>${new Date(ev.timestamp).toLocaleString()}`);
+  }
+}
+
+</script>
+
+</body>
+</html>
 
