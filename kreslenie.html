@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<title>Kreslenie revírov – MsO SRZ Galanta</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  body { margin:0; font-family:Arial; background:#111; color:white; }
+  #map { height:100vh; }
+  #panel {
+    position:absolute; top:10px; left:10px; z-index:9999;
+    background:#222; padding:12px; border-radius:8px;
+    box-shadow:0 0 10px #000;
+  }
+  button, select {
+    margin-top:5px; width:100%; padding:8px;
+    background:#333; color:white; border:none; border-radius:6px;
+    cursor:pointer;
+  }
+  button:hover { background:#444; }
+  textarea {
+    width:100%; height:200px; margin-top:10px;
+    background:#000; color:#0f0; padding:8px;
+    border-radius:6px; font-family:monospace;
+  }
+</style>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+<div id="panel">
+  <b>✏️ Režim kreslenia:</b><br>
+  <select id="mode">
+    <option value="line">Polyline (rieka)</option>
+    <option value="polygon">Polygon (štrkovisko)</option>
+  </select>
+
+  <button id="clear">Vymazať posledný bod</button>
+  <button id="reset">Vymazať všetko</button>
+  <button id="export">EXPORTovať súradnice</button>
+
+  <textarea id="output" placeholder="Export sa zobrazí tu..."></textarea>
+</div>
+
+<div id="map"></div>
+
+<script>
+// ===== MAPA =====
+const map = L.map('map').setView([48.11049, 17.62985], 14);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19
+}).addTo(map);
+
+let mode = "line";
+let points = [];
+let layer = null;
+
+// ===== UI =====
+document.getElementById("mode").addEventListener("change", e=>{
+  mode = e.target.value;
+});
+
+document.getElementById("clear").addEventListener("click", ()=>{
+  points.pop();
+  redraw();
+});
+
+document.getElementById("reset").addEventListener("click", ()=>{
+  points = [];
+  redraw();
+});
+
+document.getElementById("export").addEventListener("click", ()=>{
+  const out = document.getElementById("output");
+  out.value = JSON.stringify(points, null, 2);
+  out.select();
+});
+
+// ===== Klik na mapu = pridaj bod =====
+map.on("click", e=>{
+  points.push([e.latlng.lat, e.latlng.lng]);
+  redraw();
+});
+
+// ===== prekreslenie =====
+function redraw() {
+  if (layer) map.removeLayer(layer);
+
+  if (!points.length) return;
+
+  if (mode === "line") {
+    layer = L.polyline(points, {color:"cyan",weight:4}).addTo(map);
+  } else {
+    layer = L.polygon(points, {color:"lime",fillOpacity:0.3}).addTo(map);
+  }
+}
+</script>
+</body>
+</html>
